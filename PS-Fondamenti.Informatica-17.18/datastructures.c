@@ -6,49 +6,25 @@
  * */
 #include <stdio.h>
 #include <stdlib.h>
-/* ======== STRUCTURE ========= */
-struct matrice{
-  char *nome;
-  int n_righe;
-  int n_colonne;
-  int **matrix;
-}; 
-/* ======= es1.12p.h ======= */
-// Initialize a new empty matrix allocating the necessary space in input
-int **init_matrix(int righe,int colonne);
+#include "datastructures.h"
 
-// Populate the given square matrix with the given data
-void populate_matrix(struct matrice *matrix, int square_dimension,char *name);
-
-// Return a new matrix with the given properties in input
-struct matrice *populate_empty_matrix(int n_righe,int n_colonne,char *name);
-
-// Verify that product can be applied from two matrix
-int validate_dimension(struct matrice *A, struct matrice *B);
-
-// Core function for calculate product from two given matrix. Return a new matrix
-struct matrice *calculate_product(struct matrice *matrix_A, struct matrice *matrix_B);
-
-// Pretty visualize the matrix
-void pretty_print(struct matrice *matrix);
-
-int **init_matrix(int righe, int colonne){
+long **init_matrix(int righe, int colonne){
   int i;
-  int **matrix = (int **)malloc(righe * sizeof(int *)); 
+  long **matrix = (long **)malloc(righe * sizeof(long *)); 
   for (i=0; i<righe; i++) 
-    matrix[i] = (int *)malloc(colonne * sizeof(int)); 
+    matrix[i] = (long *)malloc(colonne * sizeof(long)); 
   return matrix;
 }
 
-void populate_matrix(struct matrice *matrix, int square_dimension,char *name){
-  matrix->n_righe = square_dimension;
-  matrix->n_colonne= square_dimension;
+void populate_matrix(struct matrice *matrix, int n_righe,int n_colonne,char *name){
+  matrix->n_righe = n_righe;
+  matrix->n_colonne= n_colonne;
   matrix->matrix = init_matrix(matrix->n_righe,matrix->n_colonne);
   matrix->nome = name;
   int i;
   int j;
   int tmp_value=1;
-  printf("Creazione matrice di dimensione %d ...",square_dimension);
+  printf("Creazione matrice di dimensione [%d]x[%d] ...",n_righe,n_colonne);
   for (i=0;i<matrix->n_righe;i++){
     for (j=0;j<matrix->n_colonne;j++){
       printf("\nInserisci elemento riga [%d] colonna [%d] --> ",i,j);
@@ -110,28 +86,9 @@ void pretty_print(struct matrice *matrix){
   int row, columns;
   for (row=0; row<matrix->n_righe; row++) {
     for(columns=0; columns<matrix->n_colonne; columns++) {
-      printf("%d     ", matrix->matrix[row][columns]);
+      printf("%ld     ", matrix->matrix[row][columns]);
     }
     printf("\n");
   }
 }
 
-
-int main(){
-  // Matrice A
-  struct matrice *matrix_A = (struct matrice *) malloc(sizeof(struct matrice));
-  struct matrice *matrix_B = (struct matrice *) malloc(sizeof(struct matrice));
-  int dim =0;
-  printf("Inserisci dimensione matrice quadrata: ");
-  scanf("%d",&dim);
-  populate_matrix(matrix_A,dim,"MATRIX_A");
-  pretty_print(matrix_A);
-  populate_matrix(matrix_B,dim,"MATRIX_B");
-  pretty_print(matrix_B);
-  struct matrice *matrix_C = calculate_product(matrix_A,matrix_B);
-  pretty_print(matrix_C);
-  free(matrix_A);
-  free(matrix_B);
-  free(matrix_C);
-  return 0;
-}
