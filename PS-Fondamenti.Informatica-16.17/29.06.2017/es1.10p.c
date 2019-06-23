@@ -57,28 +57,21 @@ int main (){
   return 1;
 }
 
-
 int get_iesima_riga(){
   /*Effettuare scanf per prendere INPUT */
   int i_riga = 1;
-  /* TODO: SVILUPPA PRENDI INPUT */
-
   printf("\nInserire il numero della riga [1,2] oppure -1 se si vuole uscire: \n");
   scanf("%d",&i_riga);
   // Sottrago 1 per avere un valore compliant con il mio indece di matrice (0-1)
   return i_riga; 
 }
 
-
-
-//----------------DEFINIZIONE----------------
 float medium_riga (int A[k][t],int riga){
   printf("\nmedium_riga | START");
   // Used for save the sequantial sum
   int sum=0;
   // Used for return and print the average
   float media=0;
-
   int x=0;
   for (;x<t;x++){
     printf("\nmedium_riga | Rows: %d | Index %d | Val: %d",riga,x,A[riga][x]);
