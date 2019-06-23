@@ -9,9 +9,6 @@
 
 
 
-struct matrice *scalar_mul(struct matrice *matrix,int k);
-
-
 
 struct matrice *scalar_mul(struct matrice *matrix,int k){
   int i;
