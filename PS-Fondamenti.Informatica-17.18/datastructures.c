@@ -7,6 +7,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "datastructures.h"
+#include "../c-library/log.h"
+#include "../c-library/log.c"
+
+
 
 long **init_matrix(int righe, int colonne){
   int i;
@@ -90,5 +94,49 @@ void pretty_print(struct matrice *matrix){
     }
     printf("\n");
   }
+}
+
+
+
+
+/* Initialize a new empty linear list */
+struct linear_list *init_linear_list(){
+  return (struct linear_list *)malloc(sizeof(struct linear_list));
+}
+
+struct linear_list *add_node(struct linear_list *list, double data){
+  if (list == NULL) {
+    log_debug("add_node | some input data is NULL!");
+    return NULL;
+  }
+  struct linear_list *node = init_linear_list();
+  node->data = data;
+  list->next = node;
+  node->previous= list;
+  return node;
+}
+
+void remove_node(struct linear_list *list, struct linear_list *node){
+  int found = -1;
+  struct linear_list *tmp_node = NULL;
+  tmp_node = list;
+  while (found == -1){
+    if (tmp_node->data == node->data){
+      found = 0; /* FOUND! */
+      // link the previous node with the next :D
+      tmp_node->previous = tmp_node->next;
+    }else
+      tmp_node = tmp_node->previous; /* Iterating back*/
+  }
+}
+
+int print_len_array(struct linear_list *list){ 
+  int counter =0;
+  while (list->previous != NULL){
+    ++counter;
+  }
+  printf("Array len [%d]",counter);
+  return counter;
+
 }
 

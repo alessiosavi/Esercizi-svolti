@@ -1,3 +1,7 @@
+
+/* ================ MATRIX ================= */
+
+// Define a custom matrix structure
 struct matrice{
   char *nome;
   int n_righe;
@@ -22,4 +26,21 @@ struct matrice *calculate_product(struct matrice *matrix_A, struct matrice *matr
 
 // Pretty visualize the matrix
 void pretty_print(struct matrice *matrix);
+
+
+/* ================ LINEAR LIST  ================= */
+
+// Custom list that can contains double
+struct linear_list{
+   double data;
+   struct linear_list *previous;
+   struct linear_list *next;
+};
+
+
+struct linear_list *init_linear_list();
+struct linear_list *add_node(struct linear_list *list, double data);
+
+void remove_node(struct linear_list *list, struct linear_list *node);
+int print_len_array(struct linear_list *list);
 
