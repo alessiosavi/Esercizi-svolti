@@ -1,19 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
-
-struct node {
-
-  int value;
-  struct node *next;
-};
-
-struct node *init_node(int value);
-
-void add_node(struct node **head, int value);
-
-int remove_node(struct node **head, int value);
-
-void print_node(struct node *head);
+#include <time.h>
+#include "lista.h"
 
 struct node *init_node(int value) {
   struct node *head = NULL;
@@ -95,27 +83,16 @@ int remove_node(struct node **head, int value) {
   return -1;
 }
 
-int main() {
+/* Init n sequential node */
+void init_n_node(struct node **head, int n) {
 
-  struct node *head = NULL;
-  print_node(head);
-  add_node(&head, 1);
-  print_node(head);
-  add_node(&head, 2);
-  print_node(head);
-  add_node(&head, 3);
-  print_node(head);
-  add_node(&head, 4);
-  print_node(head);
-  remove_node(&head, 1);
-  print_node(head);
-  remove_node(&head, 2);
-  print_node(head);
-  remove_node(&head, 3);
-  print_node(head);
-  remove_node(&head, 4);
-  print_node(head);
-  add_node(&head, 3);
-  print_node(head);
-  return 0;
+  clock_t begin = clock();
+  int i;
+  for (i = 0; i < n; i++) {
+    add_node(head, i);
+  }
+  clock_t end = clock();
+  double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+  float it = (float)n / time_spent;
+  printf("init_n_node | Add %d element in %f [%f it/s]", n, time_spent, it);
 }
