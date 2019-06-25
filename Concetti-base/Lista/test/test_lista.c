@@ -1,9 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <sys/time.h>
-#include "test_lista.h"
 #include "../lista.c"
-
 double getTimeElapsed(struct timeval end, struct timeval start) {
   return (end.tv_sec - start.tv_sec) +
          (end.tv_usec - start.tv_usec) / 1000000.00;
@@ -24,9 +22,9 @@ void test01(int MAX) {
   struct node *head = NULL;
 
   init_n_node(&head, MAX);
-  // print_node(head);
+  print_node(head);
   remove_node(&head, 0);
-  // print_node(head);
+  print_node(head);
 
   free(head);
   gettimeofday(end, NULL);
@@ -51,9 +49,9 @@ void test02(int MAX) {
   printf("\n================= TEST 02 =================\n %s", test_02);
   struct node *head = NULL;
   init_n_node(&head, MAX);
-  // print_node(head);
+  print_node(head);
   remove_node(&head, 5);
-  // print_node(head);
+  print_node(head);
 
   free(head);
 
@@ -80,9 +78,9 @@ void test03(int MAX) {
   struct node *head = NULL;
 
   init_n_node(&head, MAX);
-  // print_node(head);
+  print_node(head);
   remove_node(&head, MAX - 1);
-  // print_node(head);
+  print_node(head);
 
   free(head);
 
@@ -110,9 +108,9 @@ void test04(int MAX) {
   struct node *head = NULL;
 
   init_n_node(&head, MAX);
-  // print_node(head);
+  print_node(head);
   remove_node(&head, MAX);
-  // print_node(head);
+  print_node(head);
   free(head);
 
   gettimeofday(end, NULL);
@@ -134,9 +132,9 @@ void test05(int MAX) {
   struct node *head = NULL;
 
   init_n_node(&head, MAX);
-  // print_node(head);
+  print_node(head);
   add_node_root(&head, -10);
-  // print_node(head);
+  print_node(head);
   free(head);
 
   gettimeofday(&end, NULL);

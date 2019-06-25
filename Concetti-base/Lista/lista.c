@@ -38,10 +38,17 @@ void add_node_root(struct node **head, int value) {
     printf("\nReplacing root node with [%d]", value);
     *head = init_node(value);
   } else {
+
     struct node *root = init_node(value);
+    root->next = *head;
+    *head = root;
+
+    /*
+     * struct node *root = init_node(value);
     root->next = (*head)->next;
     swap_node(&root, head);
     free(root);
+    */
   }
 }
 
@@ -90,7 +97,6 @@ void print_node(struct node *head) {
 }
 
 int remove_node(struct node **head, int value) {
-  printf("\nRemove node | Checking if root exist ...");
   if (*head == NULL) {
     printf("\nCall the init function, list empty!");
     return -1;
@@ -104,15 +110,15 @@ int remove_node(struct node **head, int value) {
   /* Used for iterate the list */
   struct node *current = (*head)->next;
   /* Used for swap the next element */
-  struct node *swap_node = NULL;
 
   printf("\nremove_node | iterating value ...");
   while (current->next != NULL) {
     if (current->next->value == value) { /* Data found! */
 
-      swap_node = current->next;
-      current->next = swap_node->next;
-      free(swap_node);
+      struct node *swap = NULL;
+      swap = current->next;
+      current->next = swap->next;
+      free(swap);
 
       // current = (*head)->next;
       // free(*head);

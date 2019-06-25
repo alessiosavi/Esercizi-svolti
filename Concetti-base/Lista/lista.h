@@ -21,4 +21,4 @@ int remove_node(struct node **head, int value);
 
 void print_node(struct node *head);
 
-void init_n_node(struct node **node, int n);
+void init_n_node(struct node **head, int n);
