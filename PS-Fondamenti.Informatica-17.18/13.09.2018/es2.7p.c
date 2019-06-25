@@ -12,12 +12,10 @@
 #include "../../c-library/log.h"
 #include "../../c-library/log.c"
 
-
 typedef struct node {
   int value;
   struct node *next;
-}node;
-
+} node;
 
 // Random utils
 
@@ -33,9 +31,7 @@ int random_generate(int max);
 node *node_init(int value);
 
 // Append a new node to the tail of the list
-node* node_add(node* node,int value);
+node *node_add(node *node, int value);
 
 /* Iterate every node and delete the first node populated with 'value' */
-node* remove_node(node *head, int value);
-
-
+node *remove_node(node *head, int value);
