@@ -1,7 +1,6 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <sys/time.h>
-#include "../lista.c"
+
+#include "test_lista.h"
+
 double getTimeElapsed(struct timeval end, struct timeval start) {
   return (end.tv_sec - start.tv_sec) +
          (end.tv_usec - start.tv_usec) / 1000000.00;

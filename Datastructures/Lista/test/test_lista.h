@@ -1,6 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include <time.h>
+#include <sys/time.h>
+#include "../lista.c"
+
 void test01(int MAX);
 
 void test02(int MAX);
