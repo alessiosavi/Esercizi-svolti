@@ -32,6 +32,7 @@ void print_int_array(int *array, int size) {
 int *sub_array(int *B, int new_size, int size_used, int counter) {
 
   if (counter > size_used || counter < 0) {
+    printf("\nsub_array | TODO: MANAGE ERROR!!!");
     return B;
   }
 
@@ -43,7 +44,7 @@ int *sub_array(int *B, int new_size, int size_used, int counter) {
   print_int_array(new_list, new_size);
 #endif
 
-  /* Copy everything before the element until counter */
+  /* Copy the size of (n element before * int size) from the input array */
   memcpy(new_list, B, (counter) * sizeof(int));
 
 #ifdef DEBUG
@@ -60,8 +61,13 @@ int *sub_array(int *B, int new_size, int size_used, int counter) {
   print_int_array(new_list, new_size);
 #endif
 
-  /* Setting -1 starting from the last element of the list till the end */
-  memset(&new_list[counter], -1, (size_used - counter) * sizeof(int));
+  if (counter == new_size) {
+    printf("\nsub_array | Not necessary to initialize memory, array full!");
+  } else {
+
+    /* Setting -1 starting from the last element of the list till the end */
+    memset(&new_list[counter + 1], -1, (new_size - counter - 1) * sizeof(int));
+  }
 
 #ifdef DEBUG
   printf("\nNew list data after memset> ");
@@ -389,7 +395,7 @@ void test_sub_array() {
 int main() {
 
   /*
-  int test_size = 20000;
+     int test_size = 20000;
      test_01(1, test_size);
      test_02(2, test_size);
      test_03(3, test_size);
