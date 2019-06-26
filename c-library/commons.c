@@ -31,6 +31,7 @@ double get_time_elapsed(struct timeval *start_time) {
   double time_spent = getTimeElapsed(*end_time, *start_time);
   free(end_time);
   free(start_time);
+  printf("\nExecution time = %f\n", time_spent);
   return time_spent;
 }
 

@@ -1,5 +1,29 @@
 #include "static-list.h"
 
+/* Create a new array formed by B[start1] to B[stop1] and from B[start2] to
+ *B[stop2]
+ *
+ * - int *B:
+ *    array that contains the the data that we want to copy
+ * - int start1:
+ *    index of the array that we want to start copy from
+ * - int end1:
+ *    index of the array that we want to stop from copy
+ * - int start2:
+ *    index of the array that we want to restart copy from
+ * - int end2:
+ *    index of the array that we want to stop from copy
+ * - int size:
+ *    size of the new array
+ * */
+/*
+int *sub_array(int *B, int start1, int end1, int start2, int end2, int size) {
+
+  int *ret = malloc(size * sizeof(int));
+  return NULL;
+}
+*/
+
 void print_nodes(struct list *data) {
 
   if (data == NULL) {
@@ -83,8 +107,24 @@ void add_node(struct list **data, int value) {
   }
 }
 
+// void add_node_by_index(struct list **data,int value, int index){}
+
+void remove_node_by_index(struct list **data, int index) {
+
+  /* Be sure that the list and the array are (at least) allocated */
+  if (*data == NULL || (*data)->array == NULL) {
+    printf("\nremove_node | LIST EMPTY!");
+    return;
+  }
+
+  /* Be sure that the element have the value in that position */
+  if (index <= (*data)->size) {
+  }
+}
+
 void remove_node(struct list **data, int value) {
 
+  /* Be sure that the list and the array are (at least) allocated */
   if (*data == NULL || (*data)->array == NULL) {
     printf("\nremove_node | LIST EMPTY!");
     return;
@@ -128,7 +168,66 @@ void remove_node(struct list **data, int value) {
   printf("\remove_node | Data [%d] not found ... ", value);
 }
 
+struct list *init_n_node(int n) {
+  struct list *list = NULL;
+
+  int i;
+  for (i = 0; i < n; i++) {
+    add_node(&list, i);
+  }
+  return list;
+}
+
 void test_01(int t, int max) {
+  struct timeval *start = get_time();
+
+  printf("\n========== TEST %d ==========\n", t);
+  char *test_msg = "Insert element and remove root node";
+  printf("\n%s %d element\n", test_msg, max);
+
+  struct list *list = init_n_node(max);
+  print_nodes(list);
+  remove_node(&list, 0);
+  print_nodes(list);
+  get_time_elapsed(start);
+}
+
+void test_02(int t, int max) {
+  struct timeval *start = get_time();
+
+  printf("\n========== TEST %d ==========\n", t);
+  char *test_msg = "Insert element and remove mid node";
+  printf("\n%s %d element\n", test_msg, max);
+  struct list *list = init_n_node(max);
+  print_nodes(list);
+  remove_node(&list, max / 2);
+  print_nodes(list);
+  get_time_elapsed(start);
+}
+void test_03(int t, int max) {
+  struct timeval *start = get_time();
+  printf("\n========== TEST %d ==========\n", t);
+  char *test_msg = "Insert element and remove last node";
+  printf("\n%s %d element\n", test_msg, max);
+  struct list *list = init_n_node(max);
+  print_nodes(list);
+  remove_node(&list, max - 1);
+  print_nodes(list);
+
+  get_time_elapsed(start);
+}
+void test_04(int t, int max) {
+  struct timeval *start = get_time();
+  printf("\n========== TEST %d ==========\n", t);
+  char *test_msg = "Insert element and try to remove a non existing node";
+  printf("\n%s %d element\n", test_msg, max);
+  struct list *list = init_n_node(max);
+  print_nodes(list);
+  remove_node(&list, max);
+  print_nodes(list);
+  get_time_elapsed(start);
+}
+void test_10(int t, int max) {
   printf("\n========== TEST %d ==========\n", t);
   char *test_msg = "Execution time of insert";
   printf("\n%s %d element\n", test_msg, max);
@@ -138,9 +237,14 @@ void test_01(int t, int max) {
   for (i = 0; i < max; ++i) {
     add_node(&list, i);
   }
-  double _time = get_time_elapsed(start);
-
-  printf("\nExecution time = %f\n", _time);
+  get_time_elapsed(start);
 }
 
-int main() { test_01(1, 500000); }
+int main() {
+
+  test_01(1, 20);
+  test_02(2, 20);
+  test_03(3, 20);
+  test_04(4, 20);
+  test_10(10, 10000);
+}

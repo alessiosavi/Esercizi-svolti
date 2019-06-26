@@ -36,8 +36,16 @@ struct list *init_list(int size, int value);
 /* Use the pointer of the structure for add a new value */
 void add_node(struct list **data, int value);
 
+/* Add or replace a node in a particular position */
+void add_node_by_index(struct list **data,int value, int position);
+
 /* Remove the data using memset */
 void remove_node(struct list **data, int value);
 
 /* Add or replace a node in a particular position */
-void add_node_position(struct list **data,int value, int position);
+void remove_node_by_index(struct list **data,int position);
+
+
+/* Remove unnecessary allocated object */
+void prune_list(struct list **list);
+
