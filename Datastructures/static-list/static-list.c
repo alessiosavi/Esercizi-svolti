@@ -5,35 +5,77 @@
  *
  * - int *B:
  *    array that contains the the data that we want to copy
- * - int start1:
- *    index of the array that we want to start copy from
- * - int end1:
- *    index of the array that we want to stop from copy
- * - int start2:
- *    index of the array that we want to restart copy from
- * - int end2:
- *    index of the array that we want to stop from copy
- * - int size:
- *    size of the new array
+ * - int new_size:
+ *    size of the new array (used in malloc)
+ * - int old_max_size:
+ *    max size of the array in input
+ * - int counter:
+ *    position of the element that we have to remove
+ *
  * */
-/*
-int *sub_array(int *B, int start1, int end1, int start2, int end2, int size) {
 
-  int *ret = malloc(size * sizeof(int));
-  return NULL;
+#define DEBUG 1
+
+void print_int_array(int *array, int size) {
+
+  if (array == NULL) {
+    printf("\nprint_int_array | ARRAY DATA not initialized");
+    return;
+  }
+  int i;
+
+  for (i = 0; i < size; i++) {
+    printf(" %d |", array[i]);
+  }
 }
-*/
+
+int *sub_array(int *B, int new_size, int size_used, int counter) {
+
+  if (counter > size_used || counter < 0) {
+    return B;
+  }
+
+  /* This will contains the new data */
+  int *new_list = malloc(new_size * sizeof(int));
+
+#ifdef DEBUG
+  printf("\nNew list data -> ");
+  print_int_array(new_list, new_size);
+#endif
+
+  /* Copy everything before the element until counter */
+  memcpy(new_list, B, (counter) * sizeof(int));
+
+#ifdef DEBUG
+  printf("\nNew list data after memcopy-> ");
+  print_int_array(new_list, new_size);
+#endif
+
+  /* Copy everything starting from the end of the size that we have copied
+   * before from counter until the last element that the array contains */
+  memcpy(&new_list[counter], &B[counter + 1],
+         (size_used - counter) * sizeof(int));
+#ifdef DEBUG
+  printf("\nNew list data after memcopy-> ");
+  print_int_array(new_list, new_size);
+#endif
+
+  /* Setting -1 starting from the last element of the list till the end */
+  memset(&new_list[counter], -1, (size_used - counter) * sizeof(int));
+
+#ifdef DEBUG
+  printf("\nNew list data after memset> ");
+  print_int_array(new_list, new_size);
+#endif
+  return new_list;
+}
 
 void print_nodes(struct list *data) {
 
   if (data == NULL) {
     printf("\nprint_nodes | Data null!!");
-    return;
-  }
-  int i = 0;
-  printf("\n");
-  for (; i < data->max_size; i++) {
-    printf(" %d |", data->array[i]);
+  } else {
+    print_int_array(data->array, data->max_size);
   }
   printf("\n");
 }
@@ -165,7 +207,7 @@ void remove_node(struct list **data, int value) {
     }
     ++counter;
   }
-  printf("\remove_node | Data [%d] not found ... ", value);
+  printf("\nRemove_node | Data [%d] not found ... ", value);
 }
 
 struct list *init_n_node(int n) {
@@ -179,7 +221,6 @@ struct list *init_n_node(int n) {
 }
 
 void test_01(int t, int max) {
-  struct timeval *start = get_time();
 
   printf("\n========== TEST %d ==========\n", t);
   char *test_msg = "Insert element and remove root node";
@@ -187,45 +228,49 @@ void test_01(int t, int max) {
 
   struct list *list = init_n_node(max);
   print_nodes(list);
+  struct timeval *start = get_time();
   remove_node(&list, 0);
-  print_nodes(list);
+  free(list);
   get_time_elapsed(start);
+  print_nodes(list);
 }
 
 void test_02(int t, int max) {
-  struct timeval *start = get_time();
 
   printf("\n========== TEST %d ==========\n", t);
   char *test_msg = "Insert element and remove mid node";
   printf("\n%s %d element\n", test_msg, max);
   struct list *list = init_n_node(max);
   print_nodes(list);
+  struct timeval *start = get_time();
   remove_node(&list, max / 2);
-  print_nodes(list);
+  free(list);
   get_time_elapsed(start);
+  print_nodes(list);
 }
 void test_03(int t, int max) {
-  struct timeval *start = get_time();
   printf("\n========== TEST %d ==========\n", t);
   char *test_msg = "Insert element and remove last node";
   printf("\n%s %d element\n", test_msg, max);
   struct list *list = init_n_node(max);
   print_nodes(list);
+  struct timeval *start = get_time();
   remove_node(&list, max - 1);
-  print_nodes(list);
-
+  free(list);
   get_time_elapsed(start);
+  print_nodes(list);
 }
 void test_04(int t, int max) {
-  struct timeval *start = get_time();
   printf("\n========== TEST %d ==========\n", t);
   char *test_msg = "Insert element and try to remove a non existing node";
   printf("\n%s %d element\n", test_msg, max);
   struct list *list = init_n_node(max);
   print_nodes(list);
+  struct timeval *start = get_time();
   remove_node(&list, max);
-  print_nodes(list);
+  free(list);
   get_time_elapsed(start);
+  print_nodes(list);
 }
 void test_10(int t, int max) {
   printf("\n========== TEST %d ==========\n", t);
@@ -238,13 +283,120 @@ void test_10(int t, int max) {
     add_node(&list, i);
   }
   get_time_elapsed(start);
+  printf("\n========== TEST %d | STOP ==========\n", t);
+}
+
+void test_sub_array01() {
+
+  printf("\ntest_sub_array01 | Init int array of 4 element, then swap with "
+         "counter > size");
+  int test[4] = { 0, 1, 2, 3 };
+  int i = 0;
+
+  printf("\nTEST:\n");
+  for (i = 0; i < 4; i++)
+    printf("%d |", test[i]);
+
+  printf("\nSwapping array ...");
+  int *swap = sub_array(test, 4, 4, 5);
+  printf("\nArray swapped!");
+  printf("\nSWAP:\n");
+  for (i = 0; i < 4; i++)
+    printf("%d |", swap[i]);
+}
+
+void test_sub_array02() {
+
+  printf("\ntest_sub_array02 | Init int array of 4 element, then swap with "
+         "counter < size");
+  int test[4] = { 0, 1, 2, 3 };
+  int i = 0;
+
+  printf("\nTEST:\n");
+  for (i = 0; i < 4; i++)
+    printf("%d |", test[i]);
+
+  printf("\nSwapping array ...");
+  int *swap = sub_array(test, 4, 4, 3);
+  printf("\nArray swapped!");
+  printf("\nSWAP:\n");
+  for (i = 0; i < 4; i++)
+    printf("%d |", swap[i]);
+}
+void test_sub_array03() {
+
+  printf("\ntest_sub_array03 | Init int array of 4 element, then swap with "
+         "counter = size");
+  int test[4] = { 0, 1, 2, 3 };
+  int i = 0;
+
+  printf("\nTEST:\n");
+  for (i = 0; i < 4; i++)
+    printf("%d |", test[i]);
+
+  printf("\nSwapping array ...");
+  int *swap = sub_array(test, 4, 4, 4);
+  printf("\nArray swapped!");
+  printf("\nSWAP:\n");
+  for (i = 0; i < 4; i++)
+    printf("%d |", swap[i]);
+}
+
+void test_sub_array04() {
+
+  printf("\ntest_sub_array04 | Init int array of 4 element, then swap with "
+         "counter = size-1");
+  int test[4] = { 0, 1, 2, 3 };
+  int i = 0;
+
+  printf("\nTEST:\n");
+  for (i = 0; i < 4; i++)
+    printf("%d |", test[i]);
+
+  printf("\nSwapping array ...");
+  int *swap = sub_array(test, 4, 4, 3);
+  printf("\nArray swapped!");
+  printf("\nSWAP:\n");
+  for (i = 0; i < 4; i++)
+    printf("%d |", swap[i]);
+}
+void test_sub_array05() {
+
+  printf("\ntest_sub_array05 | Init int array of 4 element, then swap with "
+         "counter = size-2");
+  int test[4] = { 0, 1, 2, 3 };
+  int i = 0;
+
+  printf("\nTEST:\n");
+  for (i = 0; i < 4; i++)
+    printf("%d |", test[i]);
+
+  printf("\nSwapping array ...");
+  int *swap = sub_array(test, 4, 4, 2);
+  printf("\nArray swapped!");
+  printf("\nSWAP:\n");
+  for (i = 0; i < 4; i++)
+    printf("%d |", swap[i]);
+}
+void test_sub_array() {
+  test_sub_array01();
+  test_sub_array02();
+  test_sub_array03();
+  test_sub_array04();
+  test_sub_array05();
 }
 
 int main() {
 
-  test_01(1, 20);
-  test_02(2, 20);
-  test_03(3, 20);
-  test_04(4, 20);
-  test_10(10, 10000);
+  /*
+  int test_size = 20000;
+     test_01(1, test_size);
+     test_02(2, test_size);
+     test_03(3, test_size);
+     test_04(4, test_size);
+  //  test_10(10, 10000);
+  */
+  test_sub_array();
+
+  return 0;
 }
