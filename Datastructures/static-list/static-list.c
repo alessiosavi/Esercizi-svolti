@@ -1,19 +1,6 @@
 #include "static-list.h"
 
-/* Create a new array formed by B[start1] to B[stop1] and from B[start2] to
- *B[stop2]
- *
- * - int *B:
- *    array that contains the the data that we want to copy
- * - int new_size:
- *    size of the new array (used in malloc)
- * - int old_max_size:
- *    max size of the array in input
- * - int counter:
- *    position of the element that we have to remove
- *
- * */
-
+/* Enable logging */
 #define DEBUG 1
 
 void print_int_array(int *array, int size) {
@@ -29,22 +16,30 @@ void print_int_array(int *array, int size) {
   }
 }
 
+/* Shift the value of the array and allocate a new one of a given size
+ * The method is delegated to delete the element of index 'counter' shifting the
+ * content
+ * of the array. The portion of the array since 'counter' will be copied into
+ * the new allocated array;
+ * then the other part of the data (starting from 'counter+1) will be copied.
+ * */
+
 int *sub_array(int *B, int new_size, int size_used, int counter) {
 
+  /* Be sure that the value that we want to shift is enclosed in the array size
+  */
   if (counter > size_used || counter < 0) {
+    /*TODO: Print a message for every error cause */
     printf("\nsub_array | TODO: MANAGE ERROR!!!");
     return B;
   }
 
-  /* This will contains the new data */
+  /* This array will contains the new data */
   int *new_list = malloc(new_size * sizeof(int));
 
-#ifdef DEBUG
-  printf("\nNew list data -> ");
-  print_int_array(new_list, new_size);
-#endif
-
-  /* Copy the size of (n element before * int size) from the input array */
+  /* Copy the size of (n element before * int size) from the input array
+   * starting from first element [*array -> array[0]]*/
+  printf("\nsub_array  | COPYING FIRST %d elements ...", counter);
   memcpy(new_list, B, (counter) * sizeof(int));
 
 #ifdef DEBUG
@@ -54,8 +49,10 @@ int *sub_array(int *B, int new_size, int size_used, int counter) {
 
   /* Copy everything starting from the end of the size that we have copied
    * before from counter until the last element that the array contains */
+  printf("\nCopying %d elements starting from %d", (size_used - counter),
+         counter);
   memcpy(&new_list[counter], &B[counter + 1],
-         (size_used - counter) * sizeof(int));
+         (new_size - counter) * sizeof(int));
 #ifdef DEBUG
   printf("\nNew list data after memcopy-> ");
   print_int_array(new_list, new_size);
@@ -64,9 +61,11 @@ int *sub_array(int *B, int new_size, int size_used, int counter) {
   if (counter == new_size) {
     printf("\nsub_array | Not necessary to initialize memory, array full!");
   } else {
-
+    printf("\nInitializing with -1 from %d for %d elements", counter,
+           (new_size - counter));
     /* Setting -1 starting from the last element of the list till the end */
-    memset(&new_list[counter + 1], -1, (new_size - counter - 1) * sizeof(int));
+    printf("\nInitializing : %d", new_size - counter);
+    memset(&new_list[counter], -1, (new_size - counter) * sizeof(int));
   }
 
 #ifdef DEBUG
@@ -378,7 +377,7 @@ void test_sub_array05() {
     printf("%d |", test[i]);
 
   printf("\nSwapping array ...");
-  int *swap = sub_array(test, 4, 4, 2);
+  int *swap = sub_array(test, 4, 4, 4);
   printf("\nArray swapped!");
   printf("\nSWAP:\n");
   for (i = 0; i < 4; i++)
