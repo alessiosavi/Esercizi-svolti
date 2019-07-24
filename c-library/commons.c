@@ -3,6 +3,15 @@
 #include <sys/time.h>
 #include <unistd.h>
 
+char *integer_to_string(int x) {
+  char *buffer = malloc(sizeof(char) * sizeof(int) * 4 + 1);
+  if (buffer) {
+    sprintf(buffer, "%d", x);
+  }
+  return buffer; // caller is expected to invoke free() on this buffer to
+                 // release memory
+}
+
 /* Swap two node using their memory addresses */
 void swap_node(void *A, void *B) {
   void *temp = NULL;

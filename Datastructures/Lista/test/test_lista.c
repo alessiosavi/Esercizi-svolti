@@ -144,7 +144,7 @@ void test05(int MAX) {
 
 int main() {
 
-  int MAX = 10;
+  int MAX = 10000;
   test01(MAX);
   test02(MAX);
   test03(MAX);
