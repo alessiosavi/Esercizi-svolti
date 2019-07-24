@@ -50,9 +50,10 @@ int *sub_array(int *B, int new_size, int size_used, int counter) {
 
   /* Copy everything starting from the end of the size that we have copied
    * before from counter until the last element that the array contains */
-  printf("\nCopying %d elements starting from %d", (size_used - counter), counter);
+  printf("\nCopying %d elements starting from %d", (size_used - counter),
+         counter);
   memcpy(&new_list[counter], &B[counter + 1],
-      (new_size - counter) * sizeof(int));
+         (new_size - counter) * sizeof(int));
 #ifdef DEBUG
   printf("\nNew list data after memcopy-> ");
   print_int_array(new_list, new_size);
@@ -61,11 +62,11 @@ int *sub_array(int *B, int new_size, int size_used, int counter) {
   /* We have deleted a value, so we decrease the number of element*/
   --size_used;
 
-
   if (counter == new_size) {
     printf("\nsub_array | Not necessary to initialize memory, array full!");
   } else {
-    printf("\nInitializing with -1 from %d for %d elements", size_used, (size_used - counter));
+    printf("\nInitializing with -1 from %d for %d elements", size_used,
+           (size_used - counter));
     /* Setting -1 starting from the last element of the list till the end */
     printf("\nInitializing : %d", new_size - counter);
     memset(&new_list[size_used], -1, (new_size - size_used) * sizeof(int));
@@ -113,11 +114,11 @@ struct list *init_list(int size, int value) {
   /* the size rappresent the number of node inserted in the list (only the root
    * for now) */
   list->size =
-    0; /* The node just add, will increase when the value will be set few
-          instruction below */
+      0; /* The node just add, will increase when the value will be set few
+            instruction below */
   list->max_size = size; /* Parameter used for allocate the space */
   list->array[list->size++] =
-    value; /* array that contains the value just inserted */
+      value; /* array that contains the value just inserted */
   return list;
 }
 
@@ -128,33 +129,33 @@ void add_node(struct list **data, int value) {
     printf("\nadd_node | INIT ROOT NODE %d\n", value);
     *data = init_list(MIN_LIST_LENGHT, value);
   } else if /* check if is necessary to allocate a new element */
-    ((*data)->size == (*data)->max_size) {
-      /* List have reached the maximum space! Allocate some new fresh memory */
+      ((*data)->size == (*data)->max_size) {
+    /* List have reached the maximum space! Allocate some new fresh memory */
 
-      /* Access and save the old size */
-      int old_max_size = (*data)->max_size;
-      /* Increase the size by a constant factor */
-      int new_size = old_max_size + DEFAULT_INC;
+    /* Access and save the old size */
+    int old_max_size = (*data)->max_size;
+    /* Increase the size by a constant factor */
+    int new_size = old_max_size + DEFAULT_INC;
 
-      //   printf("\nadd_node | Allocate a new space for store %d", value);
+    //   printf("\nadd_node | Allocate a new space for store %d", value);
 
-      /*Allocate a new space for the data */
-      int *new_list = malloc(new_size * sizeof(int));
-      /* Copying the data ... (destination, source, size) */
-      memcpy(new_list, (*data)->array, old_max_size * sizeof(int));
-      /* Free the data */
-      free((*data)->array);
-      /* Copy the pointer to the data*/
-      (*data)->array = new_list;
-      /* Set the new max size*/
-      (*data)->max_size = new_size;
-      /* Add the element to the new list and use the post increment to increase
-       * the size*/
-      (*data)->array[(*data)->size++] = value;
-    } else {
-      //    printf("\nadd_node | Insert -> %d | POS: %d", value, (*data)->size);
-      (*data)->array[(*data)->size++] = value;
-    }
+    /*Allocate a new space for the data */
+    int *new_list = malloc(new_size * sizeof(int));
+    /* Copying the data ... (destination, source, size) */
+    memcpy(new_list, (*data)->array, old_max_size * sizeof(int));
+    /* Free the data */
+    free((*data)->array);
+    /* Copy the pointer to the data*/
+    (*data)->array = new_list;
+    /* Set the new max size*/
+    (*data)->max_size = new_size;
+    /* Add the element to the new list and use the post increment to increase
+     * the size*/
+    (*data)->array[(*data)->size++] = value;
+  } else {
+    //    printf("\nadd_node | Insert -> %d | POS: %d", value, (*data)->size);
+    (*data)->array[(*data)->size++] = value;
+  }
 }
 
 // void add_node_by_index(struct list **data,int value, int index){}
@@ -191,7 +192,8 @@ void remove_node(struct list **data, int value) {
       int new_size = (*data)->max_size;
 
       /* This will contains the new data */
-      int *new_list = sub_array((*data)->array,new_size,(*data)->size,counter);
+      int *new_list =
+          sub_array((*data)->array, new_size, (*data)->size, counter);
 
       // malloc(new_size * sizeof(int));
       /* Copy everything before the element */
@@ -212,7 +214,8 @@ void remove_node(struct list **data, int value) {
       /* Decrease counter of the size */
       --(*data)->size;
 
-      printf("\nremove_node | Value [%d] | POS: [%d] | Removed! ", value, counter);
+      printf("\nremove_node | Value [%d] | POS: [%d] | Removed! ", value,
+             counter);
       return;
     }
     ++counter;
@@ -301,7 +304,8 @@ void test_10(int t, int max) {
 
 void test_sub_array01() {
 
-  printf("\ntest_sub_array01 | Init int array of 4 element, then swap with counter > size");
+  printf("\ntest_sub_array01 | Init int array of 4 element, then swap with "
+         "counter > size");
   int test[4] = { 0, 1, 2, 3 };
   int i = 0;
 
@@ -319,7 +323,8 @@ void test_sub_array01() {
 
 void test_sub_array02() {
 
-  printf("\ntest_sub_array02 | Init int array of 4 element, then swap with counter < size");
+  printf("\ntest_sub_array02 | Init int array of 4 element, then swap with "
+         "counter < size");
   int test[4] = { 0, 1, 2, 3 };
   int i = 0;
 
@@ -336,7 +341,8 @@ void test_sub_array02() {
 }
 void test_sub_array03() {
 
-  printf("\ntest_sub_array03 | Init int array of 4 element, then swap with counter = size");
+  printf("\ntest_sub_array03 | Init int array of 4 element, then swap with "
+         "counter = size");
   int test[4] = { 0, 1, 2, 3 };
   int i = 0;
 
@@ -348,13 +354,14 @@ void test_sub_array03() {
   int *swap = sub_array(test, 4, 4, 4);
   printf("\nArray swapped!");
   printf("\nSWAP:\n");
-  //for (i = 0; i < 4; i++)
+  // for (i = 0; i < 4; i++)
   printf("%d |", swap[i]);
 }
 
 void test_sub_array04() {
 
-  printf("\ntest_sub_array04 | Init int array of 4 element, then swap with counter = size-1");
+  printf("\ntest_sub_array04 | Init int array of 4 element, then swap with "
+         "counter = size-1");
   int test[4] = { 0, 1, 2, 3 };
   int i = 0;
 
@@ -371,7 +378,8 @@ void test_sub_array04() {
 }
 void test_sub_array05() {
 
-  printf("\ntest_sub_array05 | Init int array of 4 element, then swap with counter = size-2");
+  printf("\ntest_sub_array05 | Init int array of 4 element, then swap with "
+         "counter = size-2");
   int test[4] = { 0, 1, 2, 3 };
   int i = 0;
 
@@ -395,7 +403,6 @@ void test_sub_array() {
 }
 
 int main() {
-
 
   int test_size = 100000;
   test_01(1, test_size);

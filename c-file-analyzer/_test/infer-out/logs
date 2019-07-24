@@ -1,0 +1,23 @@
+[18019][environment] CWD = /home/alessiosavi/DEVOPS/UNI_CLAUDIO/c-log-analyzer/_test
+[18019][environment] No .inferconfig file found
+[18019][environment] Project root = /home/alessiosavi/DEVOPS/UNI_CLAUDIO/c-log-analyzer/_test
+[18019][environment] INFER_ARGS =   @/tmp/args.tmp.1ad1d2  ++Contents of '/tmp/args.tmp.1ad1d2':
+[18019][environment]                                         run
+[18019][environment]                                       
+[18019][environment] command line arguments:   /opt/stuff/Packages/infer-linux64-v0.16.0/lib/infer/infer/bin/infer
+[18019][environment]                           run -- gcc -c test_01.cActive checkers: biabduction (C/C++/ObjC, Java), fragment retains view (Java), liveness (C/C++/ObjC), ownership (C/C++/ObjC), RacerD (C/C++/ObjC, Java), SIOF (C/C++/ObjC), uninitialized variables (C/C++/ObjC)
+[18019][environment] Infer log identifier is 
+Infer version v0.16.0
+[18019][environment] Copyright 2009 - present Facebook. All Rights Reserved.
+[18019][environment] 
+[18019][   progress] Capturing in make/cc mode...
+[18019][      debug] WARNING: `clang -### <args>` returned an empty set of commands to run and no error. Will run the original command directly:
+[18019][      debug]   /opt/stuff/Packages/infer-linux64-v0.16.0/lib/infer/infer/bin/../../facebook-clang-plugins/clang/install/bin/clang -c test_01.c
+[18019][      debug] 
+[18019][ extern err] Error executing: /opt/stuff/Packages/infer-linux64-v0.16.0/lib/infer/infer/bin/../../facebook-clang-plugins/clang/install/bin/clang -c test_01.c
+exited with code 1
+
+[18019][ extern err] Raised at file "format.ml" (inlined), line 242, characters 35-52
+Called from file "format.ml", line 469, characters 8-33
+Called from file "format.ml", line 484, characters 6-24
+
