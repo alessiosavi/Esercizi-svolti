@@ -142,9 +142,34 @@ void test05(int MAX) {
   printf("\n================= TEST 05 =================\n");
 }
 
+/* From two given list A, B: remove the from the list B the element of the list
+ * A*/
+
+void test_list_sub(int n) {
+  /* Just for save time execution */
+  struct timeval start, end;
+  gettimeofday(&start, NULL);
+
+  struct node *A = NULL;
+  struct node *B = NULL;
+  int i = 0;
+  for (; i < n; i++) {
+    add_node(&A, rand() % 50 + 1);
+    add_node(&B, rand() % 50 + 1);
+  }
+  printf("\nPrinting list A: ");
+  print_node(A);
+  printf("\nPrinting list B: ");
+
+  for (i = 0; i < n; i++) {
+  }
+}
+
 int main() {
 
-  int MAX = 10000;
+  srand(time(0));
+
+  int MAX = 10;
   test01(MAX);
   test02(MAX);
   test03(MAX);

@@ -101,8 +101,11 @@ int remove_node(struct node **head, int value) {
     printf("\nCall the init function, list empty!");
     return -1;
   } else if ((*head)->value == value) {
+    struct node *swap = NULL;
+    swap = (*head);
+    (*head) = swap->next;
+    free(swap);
     printf("\nFound in root! %d", value);
-    *head = (*head)->next;
     return value;
   }
 
@@ -130,6 +133,22 @@ int remove_node(struct node **head, int value) {
     current = current->next;
   }
   printf("\nData not found");
+  return -1;
+}
+
+int find_node(struct node **head, int value) {
+  if (*head == NULL) {
+    printf("\nCall the init function, list empty!");
+    return -1;
+  } else if ((*head)->value == value) {
+    struct node *swap = NULL;
+    swap = (*head);
+    (*head) = swap->next;
+    free(swap);
+    printf("\nFound in root! %d", value);
+    return value;
+  }
+
   return -1;
 }
 
