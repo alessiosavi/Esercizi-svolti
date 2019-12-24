@@ -1,4 +1,4 @@
-#include "../structures/static-list/static-list.c"
+#include "structures/static-list/static-list.c"
 #include <dirent.h>
 #include <pthread.h>
 #include <stdio.h>

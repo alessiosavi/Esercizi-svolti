@@ -160,9 +160,16 @@ void test_list_sub(int n) {
   printf("\nPrinting list A: ");
   print_node(A);
   printf("\nPrinting list B: ");
+  print_node(B);
 
+  printf("\n");
   for (i = 0; i < n; i++) {
+    printf("%d | ",get_node(&A,i));
   }
+  gettimeofday(&end, NULL);
+  double time_spent = getTimeElapsed(end, start);
+  printf("\nExecution Time: %f", time_spent);
+
 }
 
 int main() {
@@ -184,5 +191,7 @@ int main() {
   swap_node(&A, &B);
   printf("\nTEST: A: %d | B: %d", A->value, B->value);
 
+
+  test_list_sub(10);
   return 0;
 }
