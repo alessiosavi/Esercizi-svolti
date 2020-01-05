@@ -2,12 +2,14 @@
 /* Enable logging */
 // #define DEBUG 1
 #define MIN_LIST_LENGHT 20
-#define DEFAULT_INC 40
+#define DEFAULT_INC MIN_LIST_LENGHT
 
 log_file init_node(char *name, char *path) {
   log_file *logfile = calloc(1, sizeof(log_file));
-  (*logfile).name = name;
-  (*logfile).path = path;
+  (*logfile).name = malloc(strlen(name) + 1);
+  (*logfile).path = malloc(strlen(path) + 1);
+  strcpy((*logfile).name, name);
+  strcpy((*logfile).path, path);
   return *logfile;
 }
 
@@ -49,7 +51,7 @@ log_file *sub_array(log_file *B, int new_size, int size_used, int counter) {
    */
   if (counter > size_used || counter < 0) {
     /*TODO: Print a message for every error cause */
-    printf("\nsub_array | TODO: MANAGE ERROR!!!");
+    printf("\nsub_array | Invalid index!");
     return B;
   }
   /* This array will contains the new data */
@@ -57,7 +59,7 @@ log_file *sub_array(log_file *B, int new_size, int size_used, int counter) {
   /* Copy the size of (n element before * int size) from the input array
    * starting from first element [*array -> array[0]]*/
   printf("\nsub_array | COPYING FIRST %d elements ...", counter);
-  memcpy(new_list, B, (counter) * sizeof(log_file));
+  memmove(new_list, B, (counter) * sizeof(log_file));
 #ifdef DEBUG
   printf("\nNew list data after FIRST memcopy-> ");
   print_log_file_list(new_list, new_size);
@@ -66,8 +68,8 @@ log_file *sub_array(log_file *B, int new_size, int size_used, int counter) {
    * before from counter until the last element that the array contains */
   printf("\nCopying %d elements starting from %d", (size_used - counter - 1),
          counter + 1);
-  memcpy(&new_list[counter], &B[counter + 1],
-         (new_size - counter - 1) * sizeof(log_file));
+  memmove(&new_list[counter], &B[counter + 1],
+          (new_size - counter - 1) * sizeof(log_file));
 #ifdef DEBUG
   printf("\nNew list data after SECOND memcopy-> ");
   print_log_file_list(new_list, new_size);
@@ -141,6 +143,7 @@ struct list *init_list(int size, char *name, char *path) {
   if (size <= 0) {
     size = MIN_LIST_LENGHT;
   }
+
   /* Creating uninitialized memory for the struct */
   struct list *list = calloc(1, sizeof(struct list));
   /* Be sure that the memory was really allocated */
@@ -232,9 +235,9 @@ void remove_node(struct list **data, char *name) {
   /* Iterating the data ... */
   while (counter < (*data)->size) {
     /* Data found! */
-    if ((*data)->array[counter].name == name) {
-      /* Delete the address copying the memory */
-      int new_size = (*data)->max_size;
+    if (strcmp((*data)->array[counter].name, name) == 0) {
+      /* Delete the address copying the memory before and after the counter */
+      const int new_size = (*data)->max_size;
       /* This will contains the new data */
       log_file *new_list =
           sub_array((*data)->array, new_size, (*data)->size, counter);
@@ -266,19 +269,17 @@ struct list *init_n_node(int n) {
 
 void free_list(struct list *list) {
   int i = 0;
-
   for (; i < list->size; i++) {
 
     if (list->array[i].name != NULL) {
 #ifdef DEBUG
-
-      printf("\nFree Name\n");
+      printf("\nFree Name: %s\n", list->array[i].name);
 #endif
       free(list->array[i].name);
     }
     if (list->array[i].path != NULL) {
 #ifdef DEBUG
-      printf("\nFree Path\n");
+      printf("\nFree Path: %s\n", list->array[i].path);
 #endif
       free(list->array[i].path);
     }

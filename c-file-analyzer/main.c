@@ -17,10 +17,10 @@ void *read_tail(void *ptr_input) {
   else if (verify_binary_file(fp) == 0) {
     /* Not a binary file */
     data = tail(t_input);
-    fclose(fp);
   } else
-    printf("File %s is can't be readed!", (*t_input).filename);
+    printf("File %s is can't be readed, is a binary file!", (*t_input).filename);
 
+  fclose(fp);
   return (void *)data;
 }
 
@@ -28,8 +28,8 @@ log_file *init_node_thread(char *name, char *path) {
   /* Init node*/
   log_file *logfile = malloc(1 * sizeof(log_file));
   // Allocate the memory for copy the string + line terminator
-  logfile->path = malloc(strlen(path)+1);
-  logfile->name = malloc(strlen(name)+1);
+  logfile->path = malloc(strlen(path) + 1);
+  logfile->name = malloc(strlen(name) + 1);
   strcpy(logfile->name, name);
   strcpy(logfile->path, path);
   /* Number of lines to read at MAX */
@@ -45,7 +45,7 @@ log_file *init_node_thread(char *name, char *path) {
   void *content_ptr;
 
   /* Init tail input struct parameter */
-  struct tail_input *t_input = calloc(sizeof(struct tail_input), 0);
+  struct tail_input *t_input = calloc(1, sizeof(struct tail_input));
   (*t_input).n_lines = MAX_LINES;
   (*t_input).filename = logfile->filename;
 
@@ -127,9 +127,9 @@ void recognize_modification(struct list **data) {
       }
     }
     double time_elapsed = get_time_elapsed(start);
-    printf("%d) Time: %f\n", counter++, time_elapsed);
-    //sleep(5);
-    test++;
+    printf("%d) Time: %f\n", ++counter, time_elapsed);
+    // sleep(5);
+    ++test;
   }
 }
 
@@ -145,7 +145,7 @@ int main(void) {
   recognize_modification(&list);
 
   free_list(list);
-  //free(list);
+  // free(list);
 
   printf("\n");
   return 0;
