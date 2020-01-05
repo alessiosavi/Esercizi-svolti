@@ -169,6 +169,10 @@ char *tail(void *tail_input) {
   /* Open the file */
   FILE *fp = NULL;
   fp = fopen(filename, "r");
+  if (fp == NULL) {
+    printf("Unable to open file!\n");
+    return NULL;
+  }
   int new_lines_found = 0;
   /* Seeking to the end of the file */
   printf("Seeking to the end of the file\n");
@@ -182,18 +186,15 @@ char *tail(void *tail_input) {
   /* Until we have found the number of new lines that we want */
   /*FIXME -> Check EOF too */
   /*TODO -> Increase performance*/
-  while (new_lines_found < n_lines && position > 0) {
+  while (new_lines_found < n_lines && position > 0 && fp != NULL) {
     if ((c = fgetc(fp)) == '\n') {
       /* Found a new line!*/
       ++new_lines_found;
     }
-    /* reduce position at every iteration*/
-    if (fp != NULL) {
-      // printf("reduce position at every iteration | Position = %ld\n",
-      // position);
-      fseek(fp, --position, SEEK_SET);
-    } else
-      break;
+
+    fseek(fp, --position, SEEK_SET);
+    // printf("reduce position at every iteration | Position = %ld\n",
+    // position);
   }
   /* Line found, now we have to understand if there is at least one new line
    * before this one or if is the EOF, so iterate until found a new line or head
@@ -207,10 +208,11 @@ char *tail(void *tail_input) {
   const int char_size = last_character - position;
   char *data = malloc(char_size);
 
-  fread(data, 1, char_size, fp);
-  data[char_size - 1] = '\0';
-  /*Close the file and return the data to the caller*/
-  if (fp != NULL)
+  if (fp != NULL) {
+    fread(data, 1, char_size, fp);
     fclose(fp);
+  }
+  data[char_size - 1] = '\0';
+
   return data;
 }

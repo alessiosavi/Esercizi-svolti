@@ -14,19 +14,24 @@ void *read_tail(void *ptr_input) {
   char *data = NULL;
   if ((fp = fopen((*t_input).filename, "r")) == NULL)
     printf("Error on file %s\n", (*t_input).filename);
-  else if (verify_binary_file(fp) == 0)
+  else if (verify_binary_file(fp) == 0) {
     /* Not a binary file */
     data = tail(t_input);
-  else
+    fclose(fp);
+  } else
     printf("File %s is can't be readed!", (*t_input).filename);
+
   return (void *)data;
 }
 
 log_file *init_node_thread(char *name, char *path) {
   /* Init node*/
   log_file *logfile = malloc(1 * sizeof(log_file));
-  logfile->name = name;
-  logfile->path = path;
+  // Allocate the memory for copy the string + line terminator
+  logfile->path = malloc(strlen(path)+1);
+  logfile->name = malloc(strlen(name)+1);
+  strcpy(logfile->name, name);
+  strcpy(logfile->path, path);
   /* Number of lines to read at MAX */
   logfile->lines_number = MAX_LINES;
 
@@ -40,7 +45,7 @@ log_file *init_node_thread(char *name, char *path) {
   void *content_ptr;
 
   /* Init tail input struct parameter */
-  struct tail_input *t_input = malloc(sizeof(struct tail_input));
+  struct tail_input *t_input = calloc(sizeof(struct tail_input), 0);
   (*t_input).n_lines = MAX_LINES;
   (*t_input).filename = logfile->filename;
 
@@ -99,13 +104,16 @@ void load_data_from_dir(char *dirname, char *complete_path,
         }
       }
     }
+    closedir(dr);
+    free(path);
   }
 }
 
 void recognize_modification(struct list **data) {
   int i;
   int counter = 0;
-  while (1) {
+  int test = 0;
+  while (test < 1000) {
     struct timeval *start = get_time();
     for (i = 0; i < (*data)->size; i++) {
       int new_time_edit = stat_edit_time((*data)->array[i].filename);
@@ -120,7 +128,8 @@ void recognize_modification(struct list **data) {
     }
     double time_elapsed = get_time_elapsed(start);
     printf("%d) Time: %f\n", counter++, time_elapsed);
-    sleep(10);
+    //sleep(5);
+    test++;
   }
 }
 
@@ -132,10 +141,12 @@ int main(void) {
   load_data_from_dir(".", "", &list);
   /* Iterate every file and print the information */
   print_log_file_list(list->array, list->size);
-  // free_list(list);
+
   recognize_modification(&list);
 
-  free(list);
+  free_list(list);
+  //free(list);
+
   printf("\n");
   return 0;
 }

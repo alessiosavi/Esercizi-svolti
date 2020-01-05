@@ -25,9 +25,10 @@ void print_log_file_list(log_file *logfiles, int size) {
     printf("Number of lines: %d | ", logfiles[i].lines_number);
     printf("Timestamp: %d | ", logfiles[i].unix_timestamp);
     printf("Last Edit: |%s| ", logfiles[i].time_last_edit);
-    printf("Content: %s| Content-stop ", logfiles[i].content);
+    printf("Content:\n%s| Content-stop ", logfiles[i].content);
   }
 }
+
 void print_nodes(struct list *data) {
   if (data == NULL)
     printf("\nprint_nodes | Data null!!");
@@ -45,7 +46,7 @@ void print_nodes(struct list *data) {
 
 log_file *sub_array(log_file *B, int new_size, int size_used, int counter) {
   /* Be sure that the value that we want to shift is enclosed in the array size
-  */
+   */
   if (counter > size_used || counter < 0) {
     /*TODO: Print a message for every error cause */
     printf("\nsub_array | TODO: MANAGE ERROR!!!");
@@ -267,16 +268,21 @@ void free_list(struct list *list) {
   int i = 0;
 
   for (; i < list->size; i++) {
-    /*
-       if (list->array[i].name != NULL){
-       printf("\nFree Name\n");
-       free(list->array[i].name);
-       }
-       if (list->array[i].path != NULL){
-       printf("\nFree Path\n");
-       free(list->array[i].path);
-       }
-       */
+
+    if (list->array[i].name != NULL) {
+#ifdef DEBUG
+
+      printf("\nFree Name\n");
+#endif
+      free(list->array[i].name);
+    }
+    if (list->array[i].path != NULL) {
+#ifdef DEBUG
+      printf("\nFree Path\n");
+#endif
+      free(list->array[i].path);
+    }
+
     if (list->array[i].filename != NULL) {
 #ifdef DEBUG
       printf("\nFree Filename\n");
